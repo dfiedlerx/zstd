@@ -117,18 +117,10 @@ size_t ZSTD_compressBlock_fast(ZSTD_CCtx* ctx,
                        const void* src, size_t srcSize)
 {
     const U32 mls = ctx->appliedParams.cParams.searchLength;
-    switch(mls)
-    {
-    default: /* includes case 3 */
-    case 4 :
-        return ZSTD_compressBlock_fast_generic(ctx, src, srcSize, 4);
-    case 5 :
-        return ZSTD_compressBlock_fast_generic(ctx, src, srcSize, 5);
-    case 6 :
-        return ZSTD_compressBlock_fast_generic(ctx, src, srcSize, 6);
-    case 7 :
-        return ZSTD_compressBlock_fast_generic(ctx, src, srcSize, 7);
-    }
+    
+    if (mls > 3 && mls < 8)
+        return ZSTD_compressBlock_fast_generic(ctx, src, srcSize, mls);
+   
 }
 
 
@@ -228,16 +220,8 @@ size_t ZSTD_compressBlock_fast_extDict(ZSTD_CCtx* ctx,
                          const void* src, size_t srcSize)
 {
     U32 const mls = ctx->appliedParams.cParams.searchLength;
-    switch(mls)
-    {
-    default: /* includes case 3 */
-    case 4 :
-        return ZSTD_compressBlock_fast_extDict_generic(ctx, src, srcSize, 4);
-    case 5 :
-        return ZSTD_compressBlock_fast_extDict_generic(ctx, src, srcSize, 5);
-    case 6 :
-        return ZSTD_compressBlock_fast_extDict_generic(ctx, src, srcSize, 6);
-    case 7 :
-        return ZSTD_compressBlock_fast_extDict_generic(ctx, src, srcSize, 7);
-    }
+    
+    if (mls > 3 && mls < 8)
+        return ZSTD_compressBlock_fast_extDict_generic(ctx, src, srcSize, mls);
+    
 }
